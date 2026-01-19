@@ -1781,13 +1781,15 @@ body {
     flex-wrap: wrap;
 }
 
-/* Analysis menu buttons - horizontal layout */
+/* Analysis menu buttons - horizontal layout - 75% size */
 .analysis-menu-container {
     position: static !important;
     display: flex !important;
     flex-direction: row !important;
-    gap: 10px;
+    gap: 8px; /* Reduced from 10px */
     order: 1;
+    transform: scale(0.75); /* 75% size reduction */
+    transform-origin: center;
 }
 
 .analysis-menu-btn {
@@ -1806,14 +1808,15 @@ body {
     margin-top: 2px;
 }
 
-/* Decision action buttons - horizontal layout */
+/* Decision action buttons - horizontal layout - 75% size */
 .decision-action-container {
     position: static !important;
     display: flex !important;
     flex-direction: row !important;
-    gap: 10px;
+    gap: 8px; /* Reduced from 10px */
     order: 2;
-    transform: none !important;
+    transform: scale(0.75) !important; /* 75% size reduction */
+    transform-origin: center;
 }
 
 .decision-action-btn {
@@ -1841,7 +1844,17 @@ body {
         bottom: 20px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
-        gap: 8px;
+        gap: 6px;
+    }
+    
+    .analysis-menu-container {
+        transform: scale(0.65); /* Further reduced for mobile */
+        gap: 6px;
+    }
+    
+    .decision-action-container {
+        transform: scale(0.65) !important; /* Further reduced for mobile */
+        gap: 6px;
     }
     
     .analysis-menu-btn {
@@ -1869,14 +1882,21 @@ body {
     .horizontal-buttons-container {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         left: 50% !important;
         transform: translateX(-50%) !important;
     }
     
-    .analysis-menu-container,
+    .analysis-menu-container {
+        justify-content: center;
+        transform: scale(0.6); /* Even smaller for very small screens */
+        gap: 4px;
+    }
+    
     .decision-action-container {
         justify-content: center;
+        transform: scale(0.6) !important; /* Even smaller for very small screens */
+        gap: 4px;
     }
     
     .analysis-menu-btn {
