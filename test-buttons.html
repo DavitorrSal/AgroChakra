@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroBio - Button Optimization Test</title>
+    
+    <!-- External Libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/optimized-buttons.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+        }
+        
+        .test-section h3 {
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .demo-map {
+            height: 300px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            border-radius: 12px;
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-seedling me-2"></i>
+            AgroBio - Button Optimization Test
+        </h1>
+        
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            <strong>Test Instructions:</strong> This page demonstrates the optimized button designs. 
+            Test all interactions including hover, click, keyboard navigation, and mobile touch.
+        </div>
+
+        <!-- Map Controls Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-map me-2"></i>Map Controls (Bottom-Left Corner)</h3>
+            <div class="demo-map">
+                Demo Map Area
+                
+                <!-- Map Controls -->
+                <div class="map-controls" style="position: absolute;">  <!-- Override fixed positioning for demo -->
+                    <div class="btn-group-vertical" role="group">
+                        <button type="button" class="btn btn-primary" title="Select Farm Area">
+                            <i class="fas fa-crop-alt"></i>
+                        </button>
+                        <button type="button" class="btn btn-info" title="Toggle Satellite View">
+                            <i class="fas fa-satellite"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning" title="Clear Selection">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary" title="Go to My Location">
+                            <i class="fas fa-location-arrow"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <p class="text-muted">
+                <i class="fas fa-lightbulb me-1"></i>
+                <strong>Features:</strong> Fixed positioning at bottom-left corner of webpage, hover for tooltips, larger touch targets, glassmorphism design
+            </p>
+        </div>
+
+        <!-- Analysis Menu Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-chart-line me-2"></i>Analysis Menu (Floating Action Button)</h3>
+            <div style="position: relative; height: 200px; background: #e9ecef; border-radius: 8px;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #6c757d;">
+                    Demo Content Area
+                </div>
+                
+                <!-- Analysis Menu -->
+                <div class="analysis-menu-container" style="position: absolute;">
+                    <div class="analysis-menu-items" id="testAnalysisMenuItems">
+                        <button class="analysis-menu-btn" title="Weather Analysis" data-label="Weather Analysis">
+                            <i class="fas fa-cloud-sun"></i>
+                        </button>
+                        <button class="analysis-menu-btn" title="Vegetation Health" data-label="Vegetation Health">
+                            <i class="fas fa-leaf"></i>
+                        </button>
+                        <button class="analysis-menu-btn" title="Soil Conditions" data-label="Soil Conditions">
+                            <i class="fas fa-mountain"></i>
+                        </button>
+                    </div>
+                    <button class="analysis-menu-fab" id="testAnalysisMenuFab" title="Analysis Menu">
+                        <i class="fas fa-chart-line"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="text-muted">
+                <i class="fas fa-lightbulb me-1"></i>
+                <strong>Features:</strong> Click FAB to expand, hover for labels, keyboard navigation (Tab, Enter, Escape)
+            </p>
+        </div>
+
+        <!-- Decision Buttons Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-tasks me-2"></i>Decision Action Buttons</h3>
+            <div style="position: relative; height: 150px; background: #e9ecef; border-radius: 8px;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #6c757d;">
+                    Decision Area
+                </div>
+                
+                <!-- Decision Action Buttons -->
+                <div class="decision-action-container" style="position: absolute;">
+                    <button class="decision-action-btn fertilizer-btn" title="Fertilization Decision">
+                        <i class="fas fa-flask"></i>
+                        <span class="btn-text">Fertilization Decision</span>
+                    </button>
+                    <button class="decision-action-btn irrigation-btn" title="Irrigation Decision">
+                        <i class="fas fa-tint"></i>
+                        <span class="btn-text">Irrigation Decision</span>
+                    </button>
+                </div>
+            </div>
+            <p class="text-muted">
+                <i class="fas fa-lightbulb me-1"></i>
+                <strong>Features:</strong> Glassmorphism container, larger touch targets, smooth animations
+            </p>
+        </div>
+
+        <!-- General Buttons Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-mouse-pointer me-2"></i>General Button Improvements</h3>
+            <div class="button-row">
+                <button class="btn btn-primary">
+                    <i class="fas fa-play me-2"></i>
+                    Primary Action
+                </button>
+                <button class="btn btn-success">
+                    <i class="fas fa-check me-2"></i>
+                    Success Action
+                </button>
+                <button class="btn btn-warning">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Warning Action
+                </button>
+                <button class="btn btn-danger">
+                    <i class="fas fa-times me-2"></i>
+                    Danger Action
+                </button>
+            </div>
+            <div class="button-row">
+                <button class="btn btn-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Info Action
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-cog me-2"></i>
+                    Secondary Action
+                </button>
+                <button class="btn btn-outline-primary">
+                    <i class="fas fa-download me-2"></i>
+                    Outline Button
+                </button>
+            </div>
+            <p class="text-muted">
+                <i class="fas fa-lightbulb me-1"></i>
+                <strong>Features:</strong> Ripple effects, better shadows, improved hover states, accessibility focus
+            </p>
+        </div>
+
+        <!-- Responsive Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-mobile-alt me-2"></i>Responsive Design Test</h3>
+            <div class="alert alert-warning">
+                <i class="fas fa-mobile-alt me-2"></i>
+                <strong>Mobile Test:</strong> Resize your browser window or test on mobile devices to see responsive behavior.
+                All buttons should maintain minimum 44px touch targets and proper spacing.
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Desktop Features:</h6>
+                    <ul>
+                        <li>Hover effects and tooltips</li>
+                        <li>Larger button sizes</li>
+                        <li>Mouse interaction optimizations</li>
+                        <li>Keyboard navigation</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Mobile Features:</h6>
+                    <ul>
+                        <li>Touch-optimized sizing</li>
+                        <li>Haptic feedback (if supported)</li>
+                        <li>Gesture support</li>
+                        <li>Thumb-friendly positioning</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accessibility Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-universal-access me-2"></i>Accessibility Features</h3>
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Accessibility Tests:</strong>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Keyboard Navigation:</h6>
+                    <ul>
+                        <li>Tab through all buttons</li>
+                        <li>Enter/Space to activate</li>
+                        <li>Escape to close menus</li>
+                        <li>Arrow keys in menus</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h6>Visual Accessibility:</h6>
+                    <ul>
+                        <li>High contrast focus indicators</li>
+                        <li>Adequate color contrast</li>
+                        <li>Clear visual hierarchy</li>
+                        <li>Readable text sizes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-tachometer-alt me-2"></i>Performance Test</h3>
+            <button class="btn btn-primary" onclick="performanceTest()">
+                <i class="fas fa-stopwatch me-2"></i>
+                Run Animation Performance Test
+            </button>
+            <div id="performanceResults" class="mt-3"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/optimized-buttons.js"></script>
+    
+    <script>
+        // Performance test function
+        function performanceTest() {
+            const results = document.getElementById('performanceResults');
+            results.innerHTML = '<div class="alert alert-info">Running performance test...</div>';
+            
+            const startTime = performance.now();
+            let animationCount = 0;
+            
+            // Create multiple animated elements
+            for (let i = 0; i < 50; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-primary me-2 mb-2';
+                btn.innerHTML = `<i class="fas fa-star me-1"></i>Test ${i + 1}`;
+                btn.style.animation = 'pulse 1s ease-in-out infinite';
+                results.appendChild(btn);
+                animationCount++;
+            }
+            
+            setTimeout(() => {
+                const endTime = performance.now();
+                const duration = endTime - startTime;
+                
+                results.innerHTML = `
+                    <div class="alert alert-success">
+                        <h6>Performance Test Results:</h6>
+                        <ul class="mb-0">
+                            <li>Created ${animationCount} animated buttons</li>
+                            <li>Total time: ${duration.toFixed(2)}ms</li>
+                            <li>Average per button: ${(duration / animationCount).toFixed(2)}ms</li>
+                            <li>Performance: ${duration < 100 ? 'Excellent' : duration < 200 ? 'Good' : 'Needs optimization'}</li>
+                        </ul>
+                    </div>
+                `;
+            }, 1000);
+        }
+        
+        // Add click handlers for demo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click feedback to all buttons
+            document.querySelectorAll('.btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('Button clicked:', this.textContent.trim());
+                });
+            });
+            
+            // Demo notification for analysis menu
+            setTimeout(() => {
+                if (window.optimizedButtons) {
+                    window.optimizedButtons.showNotificationBadge('testAnalysisMenuFab', 3);
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

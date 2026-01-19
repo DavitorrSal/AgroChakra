@@ -1,0 +1,399 @@
+/* Language Selector Styles */
+
+.language-selector-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.language-selector-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.language-selector-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    max-width: 350px;
+    width: 90%;
+    animation: languageSelectorSlideIn 0.4s ease-out;
+}
+
+@keyframes languageSelectorSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.language-selector-header {
+    margin-bottom: 20px;
+}
+
+.language-selector-header h2 {
+    color: #28a745;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.language-selector-header p {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.language-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.language-option {
+    background: #f8f9fa;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+}
+
+.language-option:hover {
+    background: #e9ecef;
+    border-color: #28a745;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2);
+    color: inherit;
+    text-decoration: none;
+}
+
+.language-option.selected {
+    background: rgba(40, 167, 69, 0.1);
+    border-color: #28a745;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.language-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.language-flag {
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.language-details h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.language-details p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.language-check {
+    font-size: 1.5rem;
+    color: #28a745;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.language-option.selected .language-check {
+    opacity: 1;
+}
+
+.language-selector-footer {
+    display: flex;
+    justify-content: center;
+}
+
+.continue-btn {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    opacity: 0.6;
+    pointer-events: none;
+    width: 100%;
+    max-width: 200px;
+}
+
+.continue-btn.enabled {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.continue-btn:hover.enabled {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.continue-btn:active {
+    transform: translateY(0);
+}
+
+/* Language Icons/Flags */
+.flag-en::before {
+    content: "🇺🇸";
+}
+
+.flag-es::before {
+    content: "🇪🇸";
+}
+
+.flag-qu::before {
+    content: "🏔️"; /* Mountain emoji for Quechua (Andean) */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .language-selector-container {
+        padding: 15px;
+        margin: 10px;
+        max-width: calc(100vw - 20px);
+        width: calc(100vw - 20px);
+        border-radius: 12px;
+    }
+    
+    .language-selector-header h2 {
+        font-size: 1.2rem;
+        gap: 8px;
+    }
+    
+    .language-selector-header p {
+        font-size: 0.8rem;
+    }
+    
+    .language-options {
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+    
+    .language-option {
+        padding: 10px;
+        border-radius: 8px;
+    }
+    
+    .language-flag {
+        font-size: 1.3rem;
+        width: 30px;
+        height: 30px;
+    }
+    
+    .language-details h3 {
+        font-size: 0.9rem;
+    }
+    
+    .language-details p {
+        font-size: 0.7rem;
+    }
+    
+    .continue-btn {
+        padding: 8px 20px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .language-selector-overlay {
+        padding: 5px;
+    }
+    
+    .language-selector-container {
+        width: calc(100vw - 10px);
+        max-width: calc(100vw - 10px);
+        padding: 12px;
+        margin: 0;
+        border-radius: 10px;
+    }
+    
+    .language-selector-header {
+        margin-bottom: 12px;
+    }
+    
+    .language-selector-header h2 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+    
+    .language-selector-header p {
+        font-size: 0.75rem;
+    }
+    
+    .language-options {
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+    
+    .language-option {
+        padding: 8px;
+        border-radius: 6px;
+    }
+    
+    .language-flag {
+        font-size: 1.2rem;
+        width: 28px;
+        height: 28px;
+    }
+    
+    .language-details h3 {
+        font-size: 0.85rem;
+    }
+    
+    .language-details p {
+        font-size: 0.65rem;
+    }
+    
+    .continue-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+        max-width: 150px;
+    }
+}
+
+/* Animation for language selection */
+@keyframes languageSelected {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.language-option.selected {
+    animation: languageSelected 0.3s ease-out;
+}
+
+/* Loading animation for continue button */
+.continue-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.continue-btn.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Simple landscape optimization */
+@media (max-height: 500px) and (orientation: landscape) {
+    .language-selector-overlay {
+        padding: 5px;
+        align-items: flex-start;
+        justify-content: center;
+        overflow-y: auto;
+    }
+    
+    .language-selector-container {
+        max-height: calc(100vh - 10px);
+        padding: 10px;
+        margin: 5px;
+        overflow-y: auto;
+    }
+    
+    .language-selector-header {
+        margin-bottom: 10px;
+    }
+    
+    .language-selector-header h2 {
+        font-size: 1rem;
+        margin-bottom: 3px;
+    }
+    
+    .language-selector-header p {
+        font-size: 0.7rem;
+    }
+    
+    .language-options {
+        gap: 6px;
+        margin-bottom: 10px;
+    }
+    
+    .language-option {
+        padding: 6px;
+    }
+    
+    .language-flag {
+        font-size: 1rem;
+        width: 25px;
+        height: 25px;
+    }
+    
+    .language-details h3 {
+        font-size: 0.8rem;
+    }
+    
+    .language-details p {
+        font-size: 0.6rem;
+    }
+    
+    .continue-btn {
+        padding: 6px 15px;
+        font-size: 0.75rem;
+        max-width: 120px;
+    }
+}

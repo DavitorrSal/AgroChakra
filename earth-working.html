@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Farm - Planetary Earth View</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            font-family: 'Roboto', sans-serif;
+            overflow: hidden;
+        }
+        
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Loading Screen Styles */
+        #loading-screen {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+        
+        .satellite-orbit {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            animation: orbitRotate 10s linear infinite;
+        }
+        
+        .satellite {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        
+        @keyframes orbitRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            width: 30%;
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00ccff);
+            border-radius: 4px;
+            animation: loadingPulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes loadingPulse {
+            from { opacity: 0.7; }
+            to { opacity: 1; }
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        /* Opening Scene Styles */
+        #opening-scene {
+            background: #000;
+            z-index: 90;
+        }
+        
+        .space-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(1px 1px at 60% 20%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1px 1px at 80% 50%, rgba(255, 255, 255, 0.6), transparent),
+                radial-gradient(2px 2px at 10% 90%, rgba(255, 255, 255, 0.8), transparent),
+                radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.6), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: starTwinkle 5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes starTwinkle {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .earth-view {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .earth {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at 30% 30%, #4a90e2, #2171b5, #1e3c72);
+            border-radius: 50%;
+            box-shadow: 
+                inset -30px -30px 60px rgba(0,0,0,0.4),
+                0 0 80px rgba(74, 144, 226, 0.3);
+            animation: earthRotate 30s linear infinite;
+        }
+        
+        .earth::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-image: 
+                radial-gradient(ellipse 40px 60px at 25% 35%, #228b22, transparent),
+                radial-gradient(ellipse 30px 80px at 45% 25%, #32cd32, transparent),
+                radial-gradient(ellipse 50px 40px at 65% 45%, #228b22, transparent),
+                radial-gradient(ellipse 35px 50px at 30% 65%, #32cd32, transparent),
+                radial-gradient(ellipse 25px 35px at 70% 70%, #228b22, transparent);
+            opacity: 0.8;
+        }
+        
+        @keyframes earthRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .mars {
+            position: absolute;
+            top: 20%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #c1440e, #8b2e03, #5c1d01);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(193, 68, 14, 0.5);
+            animation: marsFloat 20s ease-in-out infinite;
+        }
+        
+        @keyframes marsFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+        
+        .opening-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+            z-index: 10;
+        }
+        
+        .game-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.7);
+        }
+        
+        .opening-text {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+        
+        .crop-fields {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+        
+        .field {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .field h3 {
+            margin-top: 0;
+            color: #00ff88;
+        }
+        
+        .field-visual {
+            height: 100px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .earth-crops {
+            background: linear-gradient(45deg, #228b22, #32cd32);
+        }
+        
+        .mars-crops {
+            background: linear-gradient(45deg, #c1440e, #ff6b35);
+        }
+        
+        .start-btn {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.7);
+        }
+        
+        /* Earth View Styles */
+        .earth-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        #earth-view {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            position: relative;
+            background: linear-gradient(45deg, #1e3c72 0%, #2a5298 100%);
+            overflow: hidden;
+        }
+        
+        .earth-globe-3d {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at 30% 30%, #4a90e2, #2171b5, #1e3c72);
+            border-radius: 50%;
+            animation: earthRotate 60s linear infinite;
+            box-shadow: 
+                inset -30px -30px 60px rgba(0,0,0,0.4),
+                0 0 80px rgba(74, 144, 226, 0.3);
+        }
+        
+        .continent-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-image: 
+                radial-gradient(ellipse 40px 60px at 25% 35%, #228b22, transparent),
+                radial-gradient(ellipse 30px 80px at 45% 25%, #32cd32, transparent),
+                radial-gradient(ellipse 50px 40px at 65% 45%, #228b22, transparent),
+                radial-gradient(ellipse 35px 50px at 30% 65%, #32cd32, transparent),
+                radial-gradient(ellipse 25px 35px at 70% 70%, #228b22, transparent);
+            opacity: 0.8;
+        }
+        
+        .location-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            animation: locationPulse 2s infinite;
+            cursor: pointer;
+            z-index: 20;
+        }
+        
+        @keyframes locationPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+        }
+        
+        .location-marker::after {
+            content: '📍';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+        }
+        
+        .farm-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+        }
+        
+        .farm-marker {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #00ff88;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            animation: farmPulse 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes farmPulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+            }
+            50% { 
+                transform: scale(1.1);
+                box-shadow: 0 0 0 8px rgba(0, 255, 136, 0);
+            }
+        }
+        
+        .farm-marker::before {
+            content: '🌾';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+        }
+        
+        .earth-controls {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 25;
+        }
+        
+        .earth-btn {
+            background: rgba(0, 255, 136, 0.9);
+            color: #000;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 11px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .earth-btn:hover {
+            background: rgba(0, 204, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+        
+        .earth-btn.active {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        
+        .location-info {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            z-index: 25;
+            backdrop-filter: blur(10px);
+        }
+        
+        .satellite-data {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            z-index: 25;
+            backdrop-filter: blur(10px);
+        }
+        
+        .earth-integration {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        
+        .zoom-level {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff88;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            z-index: 25;
+        }
+        
+        .satellite-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .satellite-overlay.active {
+            opacity: 1;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(0, 255, 136, 0.1) 50%, 
+                rgba(255, 255, 255, 0.1) 100%);
+        }
+        
+        /* Audio Control Styles */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0, 255, 136, 0.9);
+            color: #000;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+        
+        .audio-control:hover {
+            background: rgba(0, 204, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.7);
+        }
+        
+        .audio-control.muted {
+            background: rgba(255, 107, 107, 0.9);
+            color: #fff;
+        }
+        
+        /* Story Screen Styles */
+        #story-screen {
+            background: #000;
+            z-index: 80;
+            position: relative;
+        }
+        
+        .story-image {
+            width: 90vw;
+            height: 90vh;
+            object-fit: contain;
+            display: block;
+            margin: 5vh auto;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+        
+        .story-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 90;
+        }
+        
+        .story-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff88;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            z-index: 90;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        /* Tutorial Screen Styles */
+        #tutorial-screen {
+            background: #000;
+            z-index: 70;
+            position: relative;
+        }
+        
+        .tutorial-header {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            z-index: 95;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .tutorial-image {
+            width: 90vw;
+            height: 80vh;
+            object-fit: contain;
+            display: block;
+            margin: 10vh auto 5vh;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+        
+        .tutorial-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 90;
+        }
+        
+        .tutorial-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff88;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            z-index: 90;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+        
+        .story-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .story-btn {
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .story-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.5);
+        }
+        
+        .story-btn:disabled {
+            background: rgba(128, 128, 128, 0.5);
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .story-info {
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+        }
+        
+        .story-close {
+            background: rgba(255, 107, 107, 0.9);
+            color: #fff;
+        }
+        
+        .story-close:hover {
+            background: rgba(255, 107, 107, 1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="satellite-orbit">
+                <div class="satellite"></div>
+            </div>
+            <h1>CONTROL FARM</h1>
+            <p>Loading Earth view and location services...</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <div id="loading-status" style="margin-top: 20px; font-size: 14px; color: #ccc;">
+                Initializing satellite systems...
+            </div>
+        </div>
+    </div>
+
+    <!-- Opening Scene -->
+    <div id="opening-scene" class="screen">
+        <div class="space-background">
+            <div class="stars"></div>
+            <div class="earth-view">
+                <div class="earth"></div>
+                <div class="mars"></div>
+            </div>
+        </div>
+        <div class="opening-content">
+            <h1 class="game-title">CONTROL FARM</h1>
+            <p class="opening-text">Harness the Eye in the Sky. Empower the Hands in the Soil....</p>
+            <div class="crop-fields">
+
+            </div>
+            <button id="start-game" class="start-btn">START MISSION</button>
+        </div>
+    </div>
+
+    <!-- Story Screen -->
+    <div id="story-screen" class="screen">
+        <img id="story-image" class="story-image" src="story/story_1.png" alt="Mission Briefing">
+        <div class="story-counter">
+            <span id="story-progress">1 / 3</span>
+        </div>
+        <div class="story-controls">
+            <button id="prev-story" class="story-btn" style="display: none;">← PREV</button>
+            <button id="next-story" class="story-btn">NEXT →</button>
+            <button id="skip-story" class="story-btn story-close">SKIP</button>
+        </div>
+    </div>
+
+    <!-- Tutorial Screen -->
+    <div id="tutorial-screen" class="screen">
+        <div class="tutorial-header">
+            <span>TUTORIAL</span>
+        </div>
+        <img id="tutorial-image" class="tutorial-image" src="tutorial/step_1.png" alt="Tutorial Step">
+        <div class="tutorial-counter">
+            <span id="tutorial-progress">1 / 8</span>
+        </div>
+        <div class="tutorial-controls">
+            <button id="prev-tutorial" class="story-btn" style="display: none;">← PREV</button>
+            <button id="next-tutorial" class="story-btn">NEXT →</button>
+            <button id="skip-tutorial" class="story-btn story-close">SKIP</button>
+        </div>
+    </div>
+
+    <!-- Audio Control Button -->
+    <button id="audio-toggle" class="audio-control" onclick="toggleAudio()">🔊 AUDIO ON</button>
+    
+    <!-- Audio Element -->
+    <audio id="background-audio" loop>
+        <source src="audio/bell-135509.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Audio control
+        const backgroundAudio = document.getElementById('background-audio');
+        const audioToggleBtn = document.getElementById('audio-toggle');
+        let audioEnabled = true; // Set to true by default
+        
+        // Set initial volume
+        backgroundAudio.volume = 0.3;
+        
+        // Function to play audio with user interaction
+        function playAudio() {
+            backgroundAudio.play().catch(e => {
+                console.log('Audio play failed:', e);
+            });
+            audioEnabled = true;
+            updateAudioButton();
+        }
+        
+        // Function to pause audio
+        function pauseAudio() {
+            backgroundAudio.pause();
+            audioEnabled = false;
+            updateAudioButton();
+        }
+        
+        // Function to toggle audio
+        function toggleAudio() {
+            if (backgroundAudio.paused) {
+                playAudio();
+            } else {
+                pauseAudio();
+            }
+        }
+        
+        // Update audio button appearance
+        function updateAudioButton() {
+            if (audioEnabled && !backgroundAudio.paused) {
+                audioToggleBtn.innerHTML = '🔊 AUDIO ON';
+                audioToggleBtn.classList.remove('muted');
+            } else {
+                audioToggleBtn.innerHTML = '🔇 AUDIO OFF';
+                audioToggleBtn.classList.add('muted');
+            }
+        }
+        
+        // Auto-start audio when page loads
+        function initializeAudio() {
+            // Try to play audio immediately
+            backgroundAudio.play().then(() => {
+                audioEnabled = true;
+                updateAudioButton();
+            }).catch(e => {
+                console.log('Auto-play prevented by browser, will start on user interaction');
+                audioEnabled = false;
+                updateAudioButton();
+            });
+        }
+        
+        // Story functionality
+        const storyFiles = [
+            'story/story_1.png',
+            'story/story 2.png',
+            'story/story_3.png'
+        ];
+        
+        let currentStoryIndex = 0;
+        
+        function showStory() {
+            const storyScreen = document.getElementById('story-screen');
+            const openingScene = document.getElementById('opening-scene');
+            
+            openingScene.classList.remove('active');
+            storyScreen.classList.add('active');
+            
+            // Initialize with first story
+            loadStoryImage(currentStoryIndex);
+        }
+        
+        function loadStoryImage(index) {
+            const storyImage = document.getElementById('story-image');
+            const prevBtn = document.getElementById('prev-story');
+            const nextBtn = document.getElementById('next-story');
+            const storyProgress = document.getElementById('story-progress');
+            
+            // Update image source
+            storyImage.src = storyFiles[index];
+            
+            // Update progress counter
+            storyProgress.textContent = `${index + 1} / ${storyFiles.length}`;
+            
+            // Update button visibility and text
+            if (index === 0) {
+                prevBtn.style.display = 'none';
+                nextBtn.innerHTML = 'NEXT →';
+                nextBtn.style.display = 'inline-block';
+            } else if (index === storyFiles.length - 1) {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.innerHTML = 'CONTINUE →';
+                nextBtn.style.display = 'inline-block';
+            } else {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.innerHTML = 'NEXT →';
+                nextBtn.style.display = 'inline-block';
+            }
+        }
+        
+        function nextStory() {
+            if (currentStoryIndex < storyFiles.length - 1) {
+                currentStoryIndex++;
+                loadStoryImage(currentStoryIndex);
+            } else {
+                // Last story, continue to tutorial
+                showTutorial();
+            }
+        }
+        
+        function prevStory() {
+            if (currentStoryIndex > 0) {
+                currentStoryIndex--;
+                loadStoryImage(currentStoryIndex);
+            }
+        }
+        
+        function skipStory() {
+            showTutorial();
+        }
+        
+        // Tutorial functionality
+        const tutorialFiles = [
+            'tutorial/step_1.png',
+            'tutorial/step_2.png',
+            'tutorial/step_3.png',
+            'tutorial/step_4.png',
+            'tutorial/step_5.png',
+            'tutorial/step_6.png',
+            'tutorial/step_7.png',
+            'tutorial/step_8.png'
+        ];
+        
+        let currentTutorialIndex = 0;
+        
+        function showTutorial() {
+            const tutorialScreen = document.getElementById('tutorial-screen');
+            const storyScreen = document.getElementById('story-screen');
+            
+            storyScreen.classList.remove('active');
+            tutorialScreen.classList.add('active');
+            
+            // Initialize with first tutorial step
+            loadTutorialImage(currentTutorialIndex);
+        }
+        
+        function loadTutorialImage(index) {
+            const tutorialImage = document.getElementById('tutorial-image');
+            const prevBtn = document.getElementById('prev-tutorial');
+            const nextBtn = document.getElementById('next-tutorial');
+            const tutorialProgress = document.getElementById('tutorial-progress');
+            
+            // Update image source
+            tutorialImage.src = tutorialFiles[index];
+            
+            // Update progress counter
+            tutorialProgress.textContent = `${index + 1} / ${tutorialFiles.length}`;
+            
+            // Update button visibility and text
+            if (index === 0) {
+                prevBtn.style.display = 'none';
+                nextBtn.innerHTML = 'NEXT →';
+                nextBtn.style.display = 'inline-block';
+            } else if (index === tutorialFiles.length - 1) {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.innerHTML = 'START GAME →';
+                nextBtn.style.display = 'inline-block';
+            } else {
+                prevBtn.style.display = 'inline-block';
+                nextBtn.innerHTML = 'NEXT →';
+                nextBtn.style.display = 'inline-block';
+            }
+        }
+        
+        function nextTutorial() {
+            if (currentTutorialIndex < tutorialFiles.length - 1) {
+                currentTutorialIndex++;
+                loadTutorialImage(currentTutorialIndex);
+            } else {
+                // Last tutorial step, start main game
+                startMainGame();
+            }
+        }
+        
+        function prevTutorial() {
+            if (currentTutorialIndex > 0) {
+                currentTutorialIndex--;
+                loadTutorialImage(currentTutorialIndex);
+            }
+        }
+        
+        function skipTutorial() {
+            startMainGame();
+        }
+        
+        function startMainGame() {
+            // Direct call to the HTML file with URL encoding for spaces
+            window.location.href = 'frontend/index_with_chatbot.html';
+        }
+
+        // Simulate loading process
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            const openingScene = document.getElementById('opening-scene');
+            const loadingStatus = document.getElementById('loading-status');
+            const loadingProgress = document.querySelector('.loading-progress');
+            const startButton = document.getElementById('start-game');
+            
+            const loadingSteps = [
+                "Initializing satellite systems...",
+                "Connecting to orbital networks...",
+                "Calibrating planetary sensors...",
+                "Loading agricultural data...",
+                "Establishing farm connections...",
+                "Mission ready!"
+            ];
+            
+            let step = 0;
+            const loadingInterval = setInterval(() => {
+                if (step < loadingSteps.length) {
+                    loadingStatus.textContent = loadingSteps[step];
+                    loadingProgress.style.width = `${(step + 1) * (100 / loadingSteps.length)}%`;
+                    step++;
+                } else {
+                    clearInterval(loadingInterval);
+                    // Switch to opening scene after loading
+                    setTimeout(() => {
+                        loadingScreen.classList.remove('active');
+                        openingScene.classList.add('active');
+                    }, 1000);
+                }
+            }, 1500);
+            
+            // Start game button
+            startButton.addEventListener('click', function() {
+                // Start audio when user interacts with the game
+                if (!audioEnabled) {
+                    playAudio();
+                }
+                // Show story instead of going directly to game
+                showStory();
+            });
+            
+            // Story navigation event listeners
+            document.getElementById('prev-story').addEventListener('click', prevStory);
+            document.getElementById('next-story').addEventListener('click', nextStory);
+            document.getElementById('skip-story').addEventListener('click', skipStory);
+            
+            // Tutorial navigation event listeners
+            document.getElementById('prev-tutorial').addEventListener('click', prevTutorial);
+            document.getElementById('next-tutorial').addEventListener('click', nextTutorial);
+            document.getElementById('skip-tutorial').addEventListener('click', skipTutorial);
+            
+            // Initialize audio
+            initializeAudio();
+            
+            // Initialize audio button state
+            updateAudioButton();
+            
+            // Fallback: Auto-play attempt on first user interaction
+            document.addEventListener('click', function() {
+                if (!audioEnabled && backgroundAudio.paused) {
+                    playAudio();
+                }
+            }, { once: true });
+            
+            // Story screen is ready
+        });
+    </script>
+</body>
+</html>

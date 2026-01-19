@@ -1,0 +1,710 @@
+/* Optimized Button Styles for App-like Experience */
+
+:root {
+    --button-primary: #28a745;
+    --button-primary-hover: #218838;
+    --button-secondary: #007bff;
+    --button-secondary-hover: #0056b3;
+    --button-danger: #dc3545;
+    --button-danger-hover: #c82333;
+    --button-warning: #ffc107;
+    --button-warning-hover: #e0a800;
+    --button-info: #17a2b8;
+    --button-info-hover: #138496;
+    --button-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --button-shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.25);
+    --button-radius: 12px;
+    --button-min-size: 48px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+}
+
+/* =================================
+   GENERAL BUTTON IMPROVEMENTS
+   ================================= */
+
+.btn {
+    min-height: var(--button-min-size);
+    min-width: var(--button-min-size);
+    border-radius: var(--button-radius);
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--button-shadow);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    text-decoration: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--button-shadow-hover);
+}
+
+.btn:active {
+    transform: translateY(0);
+    transition: transform 0.1s ease;
+}
+
+.btn:focus {
+    outline: 3px solid rgba(40, 167, 69, 0.3);
+    outline-offset: 2px;
+}
+
+/* Button ripple effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* =================================
+   MAP CONTROLS - BOTTOM TOOLBAR
+   ================================= */
+
+.map-controls {
+    position: fixed !important;
+    bottom: var(--spacing-lg) !important;
+    left: var(--spacing-lg) !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: var(--spacing-sm);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: fit-content;
+    height: fit-content;
+}
+
+.map-controls .btn-group-vertical {
+    flex-direction: row;
+    gap: var(--spacing-sm);
+}
+
+.map-controls .btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    font-size: 18px;
+    position: relative;
+    background: white;
+    color: #495057;
+    border: 2px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.map-controls .btn:hover {
+    color: white;
+    border-color: transparent;
+    transform: translateY(-3px) scale(1.05);
+}
+
+.map-controls .btn-primary {
+    background: linear-gradient(135deg, var(--button-primary), #20c997);
+}
+
+.map-controls .btn-primary:hover {
+    background: linear-gradient(135deg, var(--button-primary-hover), #1abc9c);
+}
+
+.map-controls .btn-info {
+    background: linear-gradient(135deg, var(--button-info), #6f42c1);
+}
+
+.map-controls .btn-info:hover {
+    background: linear-gradient(135deg, var(--button-info-hover), #5a32a3);
+}
+
+.map-controls .btn-warning {
+    background: linear-gradient(135deg, var(--button-warning), #fd7e14);
+    color: #212529;
+}
+
+.map-controls .btn-warning:hover {
+    background: linear-gradient(135deg, var(--button-warning-hover), #e8590c);
+    color: white;
+}
+
+.map-controls .btn-secondary {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    color: white;
+}
+
+.map-controls .btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268, #343a40);
+}
+
+/* Tooltip for map controls */
+.map-controls .btn::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.map-controls .btn:hover::after {
+    opacity: 1;
+}
+
+/* =================================
+   ANALYSIS MENU - FLOATING ACTION BUTTON
+   ================================= */
+
+.analysis-menu-container {
+    position: fixed;
+    bottom: 120px;
+    right: var(--spacing-lg);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-md);
+}
+
+.analysis-menu-fab {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--button-primary), #20c997);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1001;
+}
+
+.analysis-menu-fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.analysis-menu-fab.active {
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, var(--button-danger), #e74c3c);
+}
+
+.analysis-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.analysis-menu-items.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.analysis-menu-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transform: scale(0);
+    animation: menuItemAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.analysis-menu-btn:nth-child(1) {
+    background: linear-gradient(135deg, var(--button-info), #138496);
+    animation-delay: 0.1s;
+}
+
+.analysis-menu-btn:nth-child(2) {
+    background: linear-gradient(135deg, var(--button-primary), #1e7e34);
+    animation-delay: 0.2s;
+}
+
+.analysis-menu-btn:nth-child(3) {
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    animation-delay: 0.3s;
+}
+
+.analysis-menu-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes menuItemAppear {
+    from {
+        transform: scale(0) rotate(-90deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Menu item labels */
+.analysis-menu-btn::before {
+    content: attr(data-label);
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    margin-right: 12px;
+}
+
+.analysis-menu-btn:hover::before {
+    opacity: 1;
+}
+
+/* =================================
+   DECISION ACTION BUTTONS
+   ================================= */
+
+.decision-action-container {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.decision-action-btn {
+    min-width: 140px;
+    height: 64px;
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: decisionButtonAppear 0.5s ease-out forwards;
+    text-align: center;
+    padding: var(--spacing-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.fertilizer-btn {
+    background: linear-gradient(135deg, var(--button-primary), #20c997);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+}
+
+.fertilizer-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+    color: white;
+}
+
+.irrigation-btn {
+    background: linear-gradient(135deg, var(--button-secondary), #0056b3);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.irrigation-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+    color: white;
+}
+
+.decision-action-btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.decision-action-btn .btn-text {
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: center;
+    line-height: 1.2;
+    font-weight: 500;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.decision-action-btn i {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+/* =================================
+   NAVIGATION IMPROVEMENTS
+   ================================= */
+
+.navbar {
+    backdrop-filter: blur(10px);
+    background: rgba(40, 167, 69, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar .btn {
+    min-height: 40px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.navbar .btn-outline-light {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.navbar .btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+/* =================================
+   SKIP ALL BUTTON
+   ================================= */
+
+.skip-all-btn {
+    position: fixed;
+    top: 80px;
+    right: var(--spacing-lg);
+    z-index: 25000;
+    background: linear-gradient(135deg, var(--button-danger), #e74c3c);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3);
+    min-height: var(--button-min-size);
+}
+
+.skip-all-btn:hover {
+    background: linear-gradient(135deg, var(--button-danger-hover), #c82333);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
+.skip-all-btn:active {
+    transform: translateY(0);
+}
+
+/* =================================
+   CHATBOT TOGGLE IMPROVEMENTS
+   ================================= */
+
+.chatbot-toggle {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--button-primary), #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: white;
+    font-size: 24px;
+    border: none;
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+}
+
+.chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+}
+
+.chatbot-toggle.hidden {
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* =================================
+   MODAL BUTTON IMPROVEMENTS
+   ================================= */
+
+.modal .btn {
+    min-height: var(--button-min-size);
+    padding: 12px 24px;
+    border-radius: var(--button-radius);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.fertilizer-decision-modal .btn,
+.analysis-modal .btn {
+    min-width: 140px;
+    min-height: 52px;
+    border-radius: 16px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.decision-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.decision-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+   ================================= */
+
+@media (max-width: 768px) {
+    :root {
+        --button-min-size: 44px;
+        --spacing-sm: 6px;
+        --spacing-md: 12px;
+        --spacing-lg: 16px;
+    }
+    
+    /* Map controls responsive */
+    .map-controls {
+        bottom: var(--spacing-md) !important;
+        left: var(--spacing-md) !important;
+        top: auto !important;
+        right: auto !important;
+        padding: 6px;
+        border-radius: 12px;
+    }
+    
+    .map-controls .btn {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+        border-radius: 12px;
+    }
+    
+    /* Analysis menu responsive */
+    .analysis-menu-container {
+        bottom: 100px;
+        right: var(--spacing-md);
+    }
+    
+    .analysis-menu-fab {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+    }
+    
+    .analysis-menu-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 16px;
+    }
+    
+    /* Decision buttons responsive */
+    .decision-action-container {
+        bottom: 20px;
+        padding: 6px;
+        gap: var(--spacing-sm);
+        border-radius: 20px;
+    }
+    
+    .decision-action-btn {
+        min-width: 120px;
+        height: 56px;
+        border-radius: 14px;
+        font-size: 12px;
+    }
+    
+    .decision-action-btn i {
+        font-size: 18px;
+    }
+    
+    .decision-action-btn .btn-text {
+        font-size: 11px;
+    }
+    
+    /* Chatbot toggle responsive */
+    .chatbot-toggle {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+    }
+    
+    /* Skip button responsive */
+    .skip-all-btn {
+        top: 70px;
+        right: var(--spacing-md);
+        padding: 10px 16px;
+        font-size: 13px;
+        border-radius: 20px;
+    }
+    
+    /* Modal buttons responsive */
+    .decision-buttons {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .decision-buttons .btn {
+        min-width: 100%;
+        padding: 16px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small screens */
+    .map-controls .btn {
+        width: 44px;
+        height: 44px;
+        font-size: 14px;
+    }
+    
+    .decision-action-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .decision-action-btn {
+        min-width: 160px;
+        height: 48px;
+    }
+    
+    .analysis-menu-btn::before {
+        display: none; /* Hide labels on very small screens */
+    }
+}
+
+/* =================================
+   ACCESSIBILITY IMPROVEMENTS
+   ================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .analysis-menu-btn,
+    .decision-action-btn,
+    .chatbot-toggle {
+        transition: none;
+        animation: none;
+    }
+    
+    .btn:hover,
+    .analysis-menu-btn:hover,
+    .decision-action-btn:hover {
+        transform: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .btn {
+        border: 2px solid currentColor;
+    }
+    
+    .map-controls,
+    .decision-action-container {
+        background: white;
+        border: 2px solid #000;
+    }
+}
+
+/* Focus improvements for keyboard navigation */
+.btn:focus-visible,
+.analysis-menu-btn:focus-visible,
+.decision-action-btn:focus-visible,
+.chatbot-toggle:focus-visible {
+    outline: 3px solid #005fcc;
+    outline-offset: 2px;
+}
+
+/* =================================
+   DARK MODE SUPPORT
+   ================================= */
+
+@media (prefers-color-scheme: dark) {
+    .map-controls,
+    .decision-action-container {
+        background: rgba(33, 37, 41, 0.95);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .map-controls .btn {
+        background: #495057;
+        color: #f8f9fa;
+        border-color: #6c757d;
+    }
+    
+    .map-controls .btn:hover {
+        background: #6c757d;
+    }
+}

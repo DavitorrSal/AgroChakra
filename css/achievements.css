@@ -1,0 +1,449 @@
+/* Achievement System Styles */
+
+/* Achievement Overlay */
+.achievement-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 30000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.achievement-overlay.show {
+    opacity: 1;
+}
+
+/* Achievement Modal */
+.achievement-modal {
+    background: linear-gradient(135deg, #ffffff, #f8f9fa);
+    border-radius: 20px;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    transform: scale(0.8) translateY(-50px);
+    transition: transform 0.3s ease;
+    border: 3px solid #ffd700;
+}
+
+.achievement-overlay.show .achievement-modal {
+    transform: scale(1) translateY(0);
+}
+
+/* Achievement Header */
+.achievement-header {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 25px 30px;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px solid #f39c12;
+}
+
+.achievement-header h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: #333;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.achievement-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
+}
+
+/* Achievement Content */
+.achievement-content {
+    text-align: center;
+}
+
+.achievement-image-container {
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+}
+
+.achievement-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.achievement-image:hover {
+    transform: scale(1.05);
+}
+
+/* Achievement Details */
+.achievement-details {
+    padding: 30px;
+}
+
+.achievement-details h3 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.achievement-description {
+    color: #6c757d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* Achievement Stats */
+.achievement-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #28a745;
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* Achievement Footer */
+.achievement-footer {
+    background: #f8f9fa;
+    padding: 25px 30px;
+    border-top: 1px solid #dee2e6;
+}
+
+.achievement-footer .btn {
+    min-width: 200px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.achievement-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Game Completion Modal */
+.completion-modal {
+    max-width: 800px;
+}
+
+.completion-content {
+    padding: 40px;
+}
+
+.completion-icon {
+    margin-bottom: 25px;
+    animation: completionPulse 2s infinite;
+}
+
+@keyframes completionPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.completion-content h3 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.completion-description {
+    color: #6c757d;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* Completion Stats */
+.completion-stats {
+    margin: 30px 0;
+}
+
+.completion-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.completion-continent {
+    text-align: center;
+}
+
+.completion-continent img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ffd700;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.completion-continent img:hover {
+    transform: scale(1.1);
+}
+
+.completion-continent span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #495057;
+}
+
+.completion-message {
+    background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+    border: 2px solid #28a745;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 25px 0;
+}
+
+.completion-message p {
+    margin: 0;
+    color: #155724;
+    font-weight: 500;
+}
+
+.completion-message p:last-child {
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+/* Navigation Updates */
+.continent-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 5px 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-right: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Continent Unlocked Notification */
+.continent-unlocked {
+    background: linear-gradient(135deg, #28a745, #20c997) !important;
+    color: white !important;
+    border: none !important;
+    font-weight: 600;
+    animation: continentUnlockPulse 0.6s ease-out;
+}
+
+@keyframes continentUnlockPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .achievement-modal {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .achievement-header {
+        padding: 20px;
+    }
+    
+    .achievement-header h2 {
+        font-size: 1.6rem;
+    }
+    
+    .achievement-image-container {
+        padding: 20px;
+    }
+    
+    .achievement-details {
+        padding: 20px;
+    }
+    
+    .achievement-details h3 {
+        font-size: 1.5rem;
+    }
+    
+    .achievement-stats {
+        gap: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .achievement-footer {
+        padding: 20px;
+    }
+    
+    .achievement-footer .btn {
+        min-width: 150px;
+        font-size: 1rem;
+        padding: 10px 25px;
+    }
+    
+    .completion-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+    
+    .completion-continent img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .completion-content {
+        padding: 25px;
+    }
+    
+    .completion-content h3 {
+        font-size: 1.8rem;
+    }
+    
+    .completion-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievement-modal {
+        width: 98%;
+        margin: 5px;
+    }
+    
+    .achievement-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .completion-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .achievement-footer .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Animation for achievement unlock */
+@keyframes achievementUnlock {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1) rotate(5deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.achievement-modal.unlocked {
+    animation: achievementUnlock 0.8s ease-out;
+}
+
+/* Sparkle effect for achievements */
+.achievement-sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ffd700;
+    border-radius: 50%;
+    animation: sparkle 2s infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Progress bar for current continent */
+.continent-progress-bar {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 8px 15px;
+    margin-right: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.continent-progress-bar .progress {
+    height: 4px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.continent-progress-bar .progress-bar {
+    background: #ffd700;
+    border-radius: 2px;
+    transition: width 0.6s ease;
+}

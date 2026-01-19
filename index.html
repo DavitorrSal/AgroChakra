@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroChakra - Smart Agricultural Analysis</title>
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/tutorial.css">
+    <link rel="stylesheet" href="css/achievements.css">
+    <link rel="stylesheet" href="css/language-selector.css">
+</head>
+<body>
+    <!-- AgroChakra Intro Screen -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-background"></div>
+        <div class="intro-content">
+            <div class="intro-logo">
+                <i class="fas fa-leaf intro-leaf"></i>
+            </div>
+            <h1 class="intro-title">AgroChakra</h1>
+            <p class="intro-tagline">Bridging the Future</p>
+            <div class="intro-loading">
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Skip All Overlays Button -->
+    <button class="skip-all-btn" id="skipAllBtn" title="Skip all messages and access platform directly">
+        <i class="fas fa-forward me-1"></i>
+        Skip
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf me-2"></i>
+                AgroChakra
+            </a>
+            <div class="navbar-nav ms-auto">
+                <!-- Empty navbar-nav to maintain layout -->
+            </div>
+            
+            <!-- Tutorial Button - Fixed Top Right Left of Language -->
+            <button class="tutorial-btn-fixed" onclick="restartTutorial()">
+                <i class="fas fa-graduation-cap"></i>
+            </button>
+            
+            <!-- Language Button - Fixed Top Right -->
+            <button class="language-btn-fixed" onclick="showLanguageSelector()" title="Change Language">
+                <i class="fas fa-globe"></i>
+            </button>
+        </div>
+    </nav>
+
+
+
+    <!-- Main Content -->
+    <div class="container-fluid p-0">
+        <!-- Full Screen Map -->
+        <div class="map-container">
+            <div id="map"></div>
+            
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <div class="btn-group-vertical" role="group">
+                    <button type="button" class="btn btn-primary" id="selectFarmBtn" title="Select Farm Area">
+                        <i class="fas fa-crop-alt"></i>
+                    </button>
+                    <button type="button" class="btn btn-info" id="satelliteBtn" title="Toggle Satellite View">
+                        <i class="fas fa-satellite"></i>
+                    </button>
+                    <button type="button" class="btn btn-warning" id="clearBtn" title="Clear Selection">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="locateBtn" title="Go to My Location">
+                        <i class="fas fa-location-arrow"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Selection Info -->
+            <div class="selection-info" id="selectionInfo" style="display: none;">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            Selected Farm Area
+                        </h6>
+                        <p class="card-text mb-1">
+                            <strong>Area:</strong> <span id="farmArea">0</span> hectares
+                        </p>
+                        <p class="card-text mb-1">
+                            <strong>Coordinates:</strong> <span id="farmCoords">-</span>
+                        </p>
+                        <button class="btn btn-success btn-sm" id="analyzeBtn">
+                            <i class="fas fa-chart-line me-1"></i>
+                            Analyze Farm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hidden Dashboard Elements (for chart creation) -->
+        <div id="hiddenDashboard" style="display: none;">
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="text-center p-4">
+                <div class="mb-4">
+                    <i class="fas fa-leaf fa-4x text-success mb-3"></i>
+                    <h3>Welcome to AgroChakra!</h3>
+                    <p class="text-muted">
+                        Smart agricultural analysis platform. Select a farm area on the map to analyze soil conditions, 
+                        weather patterns, and vegetation health using satellite data and AI insights.
+                    </p>
+                </div>
+                
+                <div class="instructions">
+                    <h5>How to Use:</h5>
+                    <ol class="text-start">
+                        <li>Navigate the map to find an agricultural area</li>
+                        <li>Click the crop icon and draw a custom area over a farm</li>
+                        <li>Click "Analyze Farm" to fetch satellite and weather data</li>
+                        <li>Review the LAI analysis and make informed fertilizer recommendations</li>
+                        <li>Get AI-powered insights for better agricultural decisions!</li>
+                    </ol>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="alert alert-info">
+                        <i class="fas fa-robot me-2"></i>
+                        <strong>New!</strong> AI Assistant available to help you understand your analysis results. 
+                        Look for the chatbot icon in the bottom right corner!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Screen -->
+            <div id="loadingScreen" class="text-center p-4" style="display: none;">
+                <div class="spinner-border text-success mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5>Analyzing Farm Data...</h5>
+                <p class="text-muted">Fetching satellite imagery and weather data</p>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success" id="progressBar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <small id="loadingStatus">Initializing analysis...</small>
+            </div>
+
+            <!-- Analysis Results -->
+            <div id="analysisResults" style="display: none;">
+                <!-- Weather Data -->
+                <div class="card mb-3" id="weatherSection" style="display: none;">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-cloud-sun me-2"></i>
+                            Weather Analysis
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="weatherChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Vegetation Health -->
+                <div class="card mb-3" id="vegetationSection" style="display: none;">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-leaf me-2"></i>
+                            Vegetation Health (LAI)
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="laiChart" width="400" height="200"></canvas>
+                        <div class="mt-3">
+                            <div class="row text-center">
+                                <div class="col-6">
+                                    <div class="metric-card">
+                                        <h4 id="currentLAI" class="text-success">-</h4>
+                                        <small>Current LAI</small>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="metric-card">
+                                        <h4 id="laiTrend" class="text-info">-</h4>
+                                        <small>30-day Trend</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soil Analysis -->
+                <div class="card mb-3" id="soilSection" style="display: none;">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-mountain me-2"></i>
+                            Soil Conditions
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="soilChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Hidden Analysis Complete Section -->
+                <div class="card mb-3" id="analysisCompleteSection" style="display: none;">
+                    <div class="card-body text-center">
+                        <div class="mt-3" id="recommendation" style="display: none;">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary btn-sm" id="nextFarmBtn">
+                                    <i class="fas fa-forward me-1"></i>
+                                    Next Farm
+                                </button>
+                                <button class="btn btn-info btn-sm" id="askChatbotBtn">
+                                    <i class="fas fa-robot me-1"></i>
+                                    Ask AI Assistant
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horizontal Buttons Container -->
+    <div class="horizontal-buttons-container">
+        <!-- Analysis Menu Buttons -->
+        <div class="analysis-menu-container">
+            <button id="weatherAnalysisBtn" class="analysis-menu-btn" title="Weather Analysis">
+                <i class="fas fa-cloud-sun"></i>
+                <span class="btn-text">Weather</span>
+            </button>
+            <button id="vegetationHealthBtn" class="analysis-menu-btn" title="Vegetation Health">
+                <i class="fas fa-leaf"></i>
+                <span class="btn-text">Vegetation</span>
+            </button>
+            <button id="soilConditionsBtn" class="analysis-menu-btn" title="Soil Conditions">
+                <i class="fas fa-mountain"></i>
+                <span class="btn-text">Soil</span>
+            </button>
+        </div>
+
+        <!-- Decision Action Buttons -->
+        <div class="decision-action-container">
+            <button id="fertilizerActionBtn" class="decision-action-btn fertilizer-btn" title="Fertilization Decision">
+                <i class="fas fa-flask"></i>
+                <span class="btn-text">Fertilization Decision</span>
+            </button>
+            <button id="irrigationActionBtn" class="decision-action-btn irrigation-btn" title="Irrigation Decision">
+                <i class="fas fa-tint"></i>
+                <span class="btn-text">Irrigation Decision</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Tutorial Modal -->
+    <div class="modal fade" id="tutorialModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-graduation-cap me-2"></i>
+                        AgroChakra Tutorial
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Understanding LAI (Leaf Area Index)</h6>
+                            <p>LAI measures the total leaf area per unit ground area. Higher values indicate healthier, denser vegetation.</p>
+                            <ul>
+                                <li><strong>LAI 0-1:</strong> Sparse vegetation</li>
+                                <li><strong>LAI 1-3:</strong> Moderate vegetation</li>
+                                <li><strong>LAI 3-6:</strong> Dense, healthy crops</li>
+                                <li><strong>LAI >6:</strong> Very dense vegetation</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Fertilizer Decision Factors</h6>
+                            <p>Consider these factors when making recommendations:</p>
+                            <ul>
+                                <li>Current LAI vs. optimal range for crop type</li>
+                                <li>Soil moisture and nutrient levels</li>
+                                <li>Recent weather patterns</li>
+                                <li>Growth stage of the crop</li>
+                                <li>Historical yield data</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h6>AI Assistant Features</h6>
+                            <p>The new AI Assistant can help you:</p>
+                            <ul>
+                                <li>Interpret LAI values and trends</li>
+                                <li>Understand fertilizer recommendations</li>
+                                <li>Analyze weather impact on crops</li>
+                                <li>Learn agricultural best practices</li>
+                                <li>Get personalized advice based on your data</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fertilizer Decision Modal -->
+    <div class="fertilizer-decision-modal" id="fertilizerDecisionModal" style="display: none;">
+        <div class="fertilizer-decision-content">
+            <div class="fertilizer-decision-header">
+                <h4>
+                    <i class="fas fa-flask me-2"></i>
+                    Fertilizer Decision
+                </h4>
+                <button class="btn btn-sm btn-outline-light" id="closeFertilizerModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="fertilizer-decision-body">
+                <div class="ai-recommendation-display" id="aiRecommendationDisplay">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-brain me-2"></i>AI Analysis:</h6>
+                        <p id="modalAiRecommendation" class="mb-1"></p>
+                        <small>Confidence: <span id="modalConfidence"></span>%</small>
+                    </div>
+                </div>
+                
+                <div class="decision-buttons">
+                    <button class="btn btn-success btn-lg me-3" id="fertilizerYesModal">
+                        <i class="fas fa-check me-2"></i>
+                        Apply Fertilizer
+                    </button>
+                    <button class="btn btn-danger btn-lg" id="fertilizerNoModal">
+                        <i class="fas fa-times me-2"></i>
+                        Skip Fertilizer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Irrigation Decision Modal -->
+    <div class="fertilizer-decision-modal" id="irrigationDecisionModal" style="display: none;">
+        <div class="fertilizer-decision-content">
+            <div class="fertilizer-decision-header">
+                <h4>
+                    <i class="fas fa-tint me-2"></i>
+                    Smart Irrigation Decision
+                </h4>
+                <button class="btn btn-sm btn-outline-light" id="closeIrrigationModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="fertilizer-decision-body">
+                <div class="ai-recommendation-display" id="irrigationRecommendationDisplay">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-brain me-2"></i>AI Analysis:</h6>
+                        <p id="modalIrrigationRecommendation" class="mb-1"></p>
+                        <small>Confidence: <span id="modalIrrigationConfidence"></span>%</small>
+                    </div>
+                    <div class="irrigation-details mt-3" id="irrigationModalDetails">
+                        <!-- Details will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="decision-buttons" id="irrigationDecisionButtons">
+                    <!-- Buttons will be populated by JavaScript based on recommendation -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Interactive Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorialOverlay" style="display: flex;">
+        <div class="tutorial-modal">
+            <div class="tutorial-header">
+                <h3>
+                    <i class="fas fa-graduation-cap me-2"></i>
+                    AgroChakra Tutorial
+                </h3>
+                <div class="tutorial-controls">
+                    <div class="tutorial-progress">
+                        <span id="tutorialStep">1</span> of <span id="tutorialTotal">8</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-light" id="closeTutorialBtn" title="Close Tutorial">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tutorial-content" id="tutorialContent">
+                <!-- Tutorial steps will be populated by JavaScript -->
+            </div>
+            
+            <div class="tutorial-footer">
+                <button class="btn btn-outline-secondary" id="skipTutorial">
+                    <i class="fas fa-forward me-2"></i>
+                    Skip Tutorial
+                </button>
+                <div class="tutorial-navigation">
+                    <button class="btn btn-secondary" id="prevTutorialBtn" style="display: none;">
+                        <i class="fas fa-chevron-left me-2"></i>
+                        Previous
+                    </button>
+                    <button class="btn btn-primary" id="nextTutorialBtn">
+                        Next
+                        <i class="fas fa-chevron-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Mission Message Modal Removed -->
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Translation System -->
+    <script src="js/translations/translations.js"></script>
+    <script src="js/language-selector.js"></script>
+    <script src="js/game-controller.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/analysis_menu.js"></script>
+    <script src="js/tutorial.js"></script>
+    <!-- Mission script removed -->
+    <script src="js/achievement-system.js"></script>
+    
+    <!-- Initialize language system after all components are loaded -->
+    <script>
+        // Intro Screen Management
+        document.addEventListener('DOMContentLoaded', () => {
+            const introOverlay = document.getElementById('introOverlay');
+            const skipBtn = document.getElementById('skipAllBtn');
+            
+            // Auto-hide intro after 4 seconds
+            setTimeout(() => {
+                if (introOverlay) {
+                    introOverlay.style.display = 'none';
+                }
+            }, 4000);
+            
+            // Skip button also hides intro
+            if (skipBtn) {
+                skipBtn.addEventListener('click', () => {
+                    if (introOverlay) {
+                        introOverlay.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Update language display in navbar
+            setTimeout(() => {
+                if (typeof updateLanguageDisplay === 'function') {
+                    updateLanguageDisplay();
+                }
+            }, 200);
+        });
+    </script>
+</body>
+</html>
